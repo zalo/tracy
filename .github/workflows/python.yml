@@ -29,8 +29,42 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.20.0
 
+      - name: Profiler GUI
+        run: |
+          cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release
+          cmake --build profiler/build --parallel --config Release
+      - name: Update utility
+        run: |
+          cmake -B update/build -S update -DCMAKE_BUILD_TYPE=Release
+          cmake --build update/build --parallel --config Release
+      - name: Capture utility
+        run: |
+          cmake -B capture/build -S capture -DCMAKE_BUILD_TYPE=Release
+          cmake --build capture/build --parallel --config Release
+      - name: Csvexport utility
+        run: |
+          cmake -B csvexport/build -S csvexport -DCMAKE_BUILD_TYPE=Release
+          cmake --build csvexport/build --parallel --config Release
+      - name: Import utilities
+        run: |
+          cmake -B import/build -S import -DCMAKE_BUILD_TYPE=Release
+          cmake --build import/build --parallel --config Release
+
+      - name: Python Package
+        run: |
+          mkdir build
+          cd build
+          cmake -DTRACY_STATIC=OFF -DTRACY_CLIENT_PYTHON=ON ../
+
+      - if: ${{ !startsWith(matrix.os, 'windows') }}
+        name: Library
+        run: meson setup -Dprefix=$GITHUB_WORKSPACE/bin/lib build && meson compile -C build && meson install -C build
+
       - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
+        run: |
+          cd python
+          python -m cibuildwheel --output-dir wheelhouse
+
         # to supply options, put them in 'env', like:
         # env:
         #   CIBW_SOME_OPTION: value
@@ -38,4 +72,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
+          path: ./python/wheelhouse/*.whl
