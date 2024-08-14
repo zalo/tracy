@@ -29,26 +29,26 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.20.0
 
-      - name: Profiler GUI
-        run: |
-          cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release
-          cmake --build profiler/build --parallel --config Release
-      - name: Update utility
-        run: |
-          cmake -B update/build -S update -DCMAKE_BUILD_TYPE=Release
-          cmake --build update/build --parallel --config Release
-      - name: Capture utility
-        run: |
-          cmake -B capture/build -S capture -DCMAKE_BUILD_TYPE=Release
-          cmake --build capture/build --parallel --config Release
-      - name: Csvexport utility
-        run: |
-          cmake -B csvexport/build -S csvexport -DCMAKE_BUILD_TYPE=Release
-          cmake --build csvexport/build --parallel --config Release
-      - name: Import utilities
-        run: |
-          cmake -B import/build -S import -DCMAKE_BUILD_TYPE=Release
-          cmake --build import/build --parallel --config Release
+      #- name: Profiler GUI
+      #  run: |
+      #    cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release
+      #    cmake --build profiler/build --parallel --config Release
+      #- name: Update utility
+      #  run: |
+      #    cmake -B update/build -S update -DCMAKE_BUILD_TYPE=Release
+      #    cmake --build update/build --parallel --config Release
+      #- name: Capture utility
+      #  run: |
+      #    cmake -B capture/build -S capture -DCMAKE_BUILD_TYPE=Release
+      #    cmake --build capture/build --parallel --config Release
+      #- name: Csvexport utility
+      #  run: |
+      #    cmake -B csvexport/build -S csvexport -DCMAKE_BUILD_TYPE=Release
+      #    cmake --build csvexport/build --parallel --config Release
+      #- name: Import utilities
+      #  run: |
+      #    cmake -B import/build -S import -DCMAKE_BUILD_TYPE=Release
+      #    cmake --build import/build --parallel --config Release
 
       - name: Python Package
         run: |
